@@ -8,11 +8,29 @@
 
 set -euo pipefail
 
+CONFIG_FILE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/config/krt.conf"
+
+
+load_configuration() {
+
+    if [[ -f "$CONFIG_FILE" ]]; then
+        source "$CONFIG_FILE"
+        echo "[INFO] Configuration loaded."
+    else
+        echo "[ERROR] Configuration file not found."
+        exit 1
+    fi
+
+}
+
 initialize_framework() {
 
     echo "[INFO] Initializing KRT Framework..."
 
-    echo "[INFO] Loading configuration..."
+    load_configuration
+
+    echo "[INFO] Project: ${PROJECT_NAME}"
+    echo "[INFO] Version: ${VERSION}"
 
     echo "[INFO] Logger not implemented yet."
 
