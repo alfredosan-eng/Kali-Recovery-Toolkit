@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+###############################################################################
+#
+#  Kali Recovery Toolkit (KRT)
+#
+#  Entry Point
+#
+###############################################################################
+
+set -euo pipefail
+
+source "$(dirname "$0")/core/initialize.sh"
+
+initialize_framework
