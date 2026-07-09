@@ -9,13 +9,13 @@
 set -euo pipefail
 
 CONFIG_FILE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/config/krt.conf"
-
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/services/logger/logger.sh"
 
 load_configuration() {
 
     if [[ -f "$CONFIG_FILE" ]]; then
         source "$CONFIG_FILE"
-        echo "[INFO] Configuration loaded."
+        log_info "Configuration loaded."
     else
         echo "[ERROR] Configuration file not found."
         exit 1
@@ -25,19 +25,19 @@ load_configuration() {
 
 initialize_framework() {
 
-    echo "[INFO] Initializing KRT Framework..."
+    log_info "Initializing KRT Framework..."
 
     load_configuration
 
-    echo "[INFO] Project: ${PROJECT_NAME}"
-    echo "[INFO] Version: ${VERSION}"
+    log_info "Project: ${PROJECT_NAME}"
+    log_info "Version: ${VERSION}"
 
-    echo "[INFO] Logger not implemented yet."
+    log_info "Logger initialized."
 
-    echo "[INFO] Module loader not implemented yet."
+    log_info "Module Loader not implemented yet."
 
-    echo "[INFO] User interface not implemented yet."
+    log_info "User Interface not implemented yet."
 
-    echo "[SUCCESS] Framework initialized."
+    log_success "Framework initialized."
 
 }
