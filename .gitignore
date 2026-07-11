@@ -1,0 +1,25 @@
+###############################################################################
+# KRT Generated Files
+###############################################################################
+
+# Runtime Backups
+backups/
+
+# Runtime Logs
+logs/*.log
+
+# Generated Reports
+reports/
+
+# Swap Files
+*.swp
+*~
+
+# macOS
+.DS_Store
+
+# Python Cache
+__pycache__/
+
+# Temporary Files
+*.tmp

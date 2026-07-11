@@ -31,9 +31,11 @@ dispatch_command() {
 
         --backup)
 
-            echo "Backup module not implemented yet."
+    source "${ROOT_DIR}/modules/backup/module.sh"
 
-            ;;
+    run_backup
+
+    ;;
 
         *)
 
