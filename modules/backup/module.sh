@@ -1,5 +1,10 @@
 run_backup() {
+    ###############################################################################
+    # Services
+    ###############################################################################
 
+    source "${ROOT_DIR}/services/collector/collector.sh"
+    source "${ROOT_DIR}/core/framework/framework_api.sh"
     log_info "Initializing Backup Module..."
 
     TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
@@ -29,22 +34,22 @@ Backup ID:
 ${TIMESTAMP}
 
 Execution Time:
-$(date)
+$(get_execution_time)
 
 User:
-$(whoami)
+$(get_current_user)
 
 Hostname:
-$(hostname)
+$(get_hostname)
 
 Kernel:
-$(uname -r)
+$(get_kernel)
 
 Architecture:
-$(uname -m)
+$(get_architecture)
 
 KRT Version:
-${VERSION}
+$(get_project_version)
 
 Status:
 SUCCESS
