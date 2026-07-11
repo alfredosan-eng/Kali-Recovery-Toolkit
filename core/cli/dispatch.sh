@@ -19,7 +19,7 @@ dispatch_command() {
             echo "  --help"
             echo "  --version"
             echo "  --backup"
-
+            echo "  --doctor"
             ;;
 
         --version)
@@ -36,7 +36,13 @@ dispatch_command() {
     run_backup
 
     ;;
+--doctor)
 
+    source "${ROOT_DIR}/modules/doctor/module.sh"
+
+    run_doctor
+
+    ;;
         *)
 
             echo "Unknown command."
