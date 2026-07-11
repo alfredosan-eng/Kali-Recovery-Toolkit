@@ -9,7 +9,9 @@
 set -euo pipefail
 
 CONFIG_FILE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/config/krt.conf"
-source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/services/logger/logger.sh"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+source "${ROOT_DIR}/core/services/load_services.sh"
 
 load_configuration() {
 

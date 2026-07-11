@@ -6,22 +6,26 @@
 #
 ###############################################################################
 
+get_timestamp() {
+    date +"%Y-%m-%d %H:%M:%S"
+}
+
 log_info() {
-    echo "[INFO] $1"
+    echo "[$(get_timestamp)] [INFO] $1"
 }
 
 log_success() {
-    echo "[SUCCESS] $1"
+    echo "[$(get_timestamp)] [SUCCESS] $1"
 }
 
 log_warning() {
-    echo "[WARNING] $1"
+    echo "[$(get_timestamp)] [WARNING] $1"
 }
 
 log_error() {
-    echo "[ERROR] $1"
+    echo "[$(get_timestamp)] [ERROR] $1"
 }
 
 log_debug() {
-    echo "[DEBUG] $1"
+    echo "[$(get_timestamp)] [DEBUG] $1"
 }

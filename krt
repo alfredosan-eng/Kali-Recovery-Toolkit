@@ -2,14 +2,32 @@
 
 ###############################################################################
 #
-#  Kali Recovery Toolkit (KRT)
-#
-#  Entry Point
+# Kali Recovery Toolkit
 #
 ###############################################################################
 
-set -euo pipefail
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source "$(dirname "$0")/core/initialize.sh"
+#
+# Framework Initialization
+#
+
+source "${ROOT_DIR}/core/initialize.sh"
+
+#
+# CLI Dispatcher
+#
+
+source "${ROOT_DIR}/core/cli/dispatch.sh"
+
+#
+# Start Framework
+#
 
 initialize_framework
+
+#
+# Execute Command
+#
+
+dispatch_command "$1"
