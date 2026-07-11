@@ -1,11 +1,3 @@
-#!/usr/bin/env bash
-
-###############################################################################
-#
-# KRT Backup Module
-#
-###############################################################################
-
 run_backup() {
 
     log_info "Initializing Backup Module..."
@@ -16,9 +8,54 @@ run_backup() {
 
     mkdir -p "${BACKUP_DIR}"
 
-    touch "${BACKUP_DIR}/backup.log"
+    BACKUP_LOG="${BACKUP_DIR}/backup.log"
+    ###############################################################################
+    # Backup Structure
+    ###############################################################################
 
-    log_info "Backup directory created."
+    mkdir -p "${BACKUP_DIR}/metadata"
+    mkdir -p "${BACKUP_DIR}/reports"
+    mkdir -p "${BACKUP_DIR}/config"
+
+    log_info "Creating backup directory..."
+
+    cat > "${BACKUP_LOG}" << EOF
+======================================================
+Kali Recovery Toolkit
+Backup Report
+======================================================
+
+Backup ID:
+${TIMESTAMP}
+
+Execution Time:
+$(date)
+
+User:
+$(whoami)
+
+Hostname:
+$(hostname)
+
+Kernel:
+$(uname -r)
+
+Architecture:
+$(uname -m)
+
+KRT Version:
+${VERSION}
+
+Status:
+SUCCESS
+
+======================================================
+EOF
+    log_info "Backup report created."
+
+    log_info "Metadata directory created."
+
+    log_info "Configuration directory created."
 
     log_success "Backup initialized."
 
