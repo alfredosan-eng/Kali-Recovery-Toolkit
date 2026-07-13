@@ -20,29 +20,47 @@ dispatch_command() {
             echo "  --version"
             echo "  --backup"
             echo "  --doctor"
+            echo "  --recover"
+            echo "  --efi" 
             ;;
 
         --version)
 
             echo "Kali Recovery Toolkit"
-            echo "Version 0.1.0"
+            echo "Version ${VERSION}"
 
             ;;
 
         --backup)
 
-    source "${ROOT_DIR}/modules/backup/module.sh"
+            source "${ROOT_DIR}/modules/backup/module.sh"
 
-    run_backup
+            run_backup
 
-    ;;
---doctor)
+            ;;
 
-    source "${ROOT_DIR}/modules/doctor/module.sh"
+        --doctor)
 
-    run_doctor
+            source "${ROOT_DIR}/modules/doctor/module.sh"
 
-    ;;
+            run_doctor
+
+            ;;
+
+        --recover)
+
+            source "${ROOT_DIR}/modules/recovery/module.sh"
+
+            run_recovery
+
+                    --efi)
+
+                        source "${ROOT_DIR}/modules/efi/module.sh"
+
+                        run_efi
+
+            ;;
+
         *)
 
             echo "Unknown command."
@@ -50,6 +68,7 @@ dispatch_command() {
             echo "Use --help"
 
             ;;
+
     esac
 
 }

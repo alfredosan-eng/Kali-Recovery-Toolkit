@@ -15,25 +15,39 @@ source "${ROOT_DIR}/services/health/health.sh"
 
 run_doctor() {
 
-    local user hostname distribution kernel architecture
-    local memory disk uptime shell
-    local disk_status
+    log_info "Initializing Doctor Module..."
 
-    user="$(get_current_user)"
-    hostname="$(get_hostname)"
-    distribution="$(collect_distribution)"
-    kernel="$(get_kernel)"
-    architecture="$(get_architecture)"
-    memory="$(collect_memory_total)"
-    disk="$(collect_disk_usage)"
-    uptime="$(collect_uptime)"
-    shell="$(collect_shell)"
+    local USERNAME
+    local HOSTNAME
+    local DISTRIBUTION
+    local KERNEL
+    local ARCHITECTURE
+    local MEMORY
+    local DISK
+    local UPTIME
+    local SHELL
 
-    disk_status="$(health_disk_usage "$disk")"
+    USERNAME="$(whoami)"
+    HOSTNAME="$(collect_hostname)"
+    DISTRIBUTION="$(collect_distribution)"
+    KERNEL="$(collect_kernel)"
+    ARCHITECTURE="$(collect_architecture)"
+    MEMORY="$(collect_memory)"
+    DISK="$(collect_disk_usage)"
+    UPTIME="$(collect_uptime)"
+    SHELL="$(collect_shell)"
 
-    ###########################################################################
-    # Terminal
-    ###########################################################################
+    local HOST_STATUS
+    local DIST_STATUS
+    local KERNEL_STATUS
+    local MEMORY_STATUS
+    local DISK_STATUS
+
+    HOST_STATUS="$(health_hostname "$HOSTNAME")"
+    DIST_STATUS="$(health_distribution "$DISTRIBUTION")"
+    KERNEL_STATUS="$(health_kernel "$KERNEL")"
+    MEMORY_STATUS="$(health_memory "$MEMORY")"
+    DISK_STATUS="$(health_disk_usage "$DISK")"
 
     echo
     echo "=============================================================="
@@ -41,41 +55,37 @@ run_doctor() {
     echo "=============================================================="
     echo
 
-    printf "%-18s %-30s %-10s\n" "Component" "Value" "Status"
-    printf "%-18s %-30s %-10s\n" "---------" "-----" "------"
-
-    printf "%-18s %-30s %-10s\n" "User" "$user" "PASS"
-    printf "%-18s %-30s %-10s\n" "Hostname" "$hostname" "PASS"
-    printf "%-18s %-30s %-10s\n" "Distribution" "$distribution" "$(health_distribution)"
-    printf "%-18s %-30s %-10s\n" "Kernel" "$kernel" "$(health_kernel)"
-    printf "%-18s %-30s %-10s\n" "Architecture" "$architecture" "PASS"
-    printf "%-18s %-30s %-10s\n" "Memory" "$memory" "$(health_memory)"
-    printf "%-18s %-30s %-10s\n" "Disk Usage" "$disk" "$disk_status"
-    printf "%-18s %-30s %-10s\n" "Uptime" "$uptime" "PASS"
-    printf "%-18s %-30s %-10s\n" "Shell" "$shell" "PASS"
+    printf "%-18s %-25s %-10s\n" "User" "$USERNAME" "PASS"
+    printf "%-18s %-25s %-10s\n" "Hostname" "$HOSTNAME" "$HOST_STATUS"
+    printf "%-18s %-25s %-10s\n" "Distribution" "$DISTRIBUTION" "$DIST_STATUS"
+    printf "%-18s %-25s %-10s\n" "Kernel" "$KERNEL" "$KERNEL_STATUS"
+    printf "%-18s %-25s %-10s\n" "Architecture" "$ARCHITECTURE" "PASS"
+    printf "%-18s %-25s %-10s\n" "Memory" "$MEMORY" "$MEMORY_STATUS"
+    printf "%-18s %-25s %-10s\n" "Disk Usage" "$DISK" "$DISK_STATUS"
+    printf "%-18s %-25s %-10s\n" "Uptime" "$UPTIME" "INFO"
+    printf "%-18s %-25s %-10s\n" "Shell" "$SHELL" "PASS"
 
     echo
     echo "=============================================================="
-
-    ###########################################################################
-    # Report
-    ###########################################################################
 
     report_init "doctor_report.txt"
 
     report_header "Doctor Report"
 
-    report_section "User" "$user"
-    report_section "Hostname" "$hostname"
-    report_section "Distribution" "$distribution"
-    report_section "Kernel" "$kernel"
-    report_section "Architecture" "$architecture"
-    report_section "Memory" "$memory"
-    report_section "Disk Usage" "$disk ($disk_status)"
-    report_section "Uptime" "$uptime"
-    report_section "Shell" "$shell"
+    report_section "User" "$USERNAME"
+    report_section "Hostname" "$HOSTNAME ($HOST_STATUS)"
+    report_section "Distribution" "$DISTRIBUTION ($DIST_STATUS)"
+    report_section "Kernel" "$KERNEL ($KERNEL_STATUS)"
+    report_section "Architecture" "$ARCHITECTURE"
+    report_section "Memory" "$MEMORY ($MEMORY_STATUS)"
+    report_section "Disk Usage" "$DISK ($DISK_STATUS)"
+    report_section "Uptime" "$UPTIME"
+    report_section "Shell" "$SHELL"
 
     report_footer
 
     report_save
+
+    log_success "Doctor analysis completed."
+
 }

@@ -1,21 +1,48 @@
 #!/usr/bin/env bash
 
 ###############################################################################
+#
 # Kali Recovery Toolkit
 # Health Service
+#
 ###############################################################################
 
 ###############################################################################
-# Status Constants
+# STATUS
 ###############################################################################
 
-STATUS_PASS="PASS"
-STATUS_WARNING="WARNING"
-STATUS_ERROR="ERROR"
-STATUS_CRITICAL="CRITICAL"
+health_status_ok() {
+
+    echo "PASS"
+
+}
+
+health_status_info() {
+
+    echo "INFO"
+
+}
+
+health_status_warning() {
+
+    echo "WARNING"
+
+}
+
+health_status_error() {
+
+    echo "ERROR"
+
+}
+
+health_status_critical() {
+
+    echo "CRITICAL"
+
+}
 
 ###############################################################################
-# Public API
+# DISK
 ###############################################################################
 
 health_disk_usage() {
@@ -25,33 +52,176 @@ health_disk_usage() {
     usage="${usage%\%}"
 
     if (( usage < 80 )); then
-        echo "$STATUS_PASS"
+
+        health_status_ok
 
     elif (( usage < 90 )); then
-        echo "$STATUS_WARNING"
 
-    elif (( usage < 95 )); then
-        echo "$STATUS_ERROR"
+        health_status_warning
 
     else
-        echo "$STATUS_CRITICAL"
+
+        health_status_critical
+
     fi
+
 }
+
+###############################################################################
+# MEMORY
+###############################################################################
 
 health_memory() {
 
-    echo "$STATUS_PASS"
+    local memory="$1"
+
+    if [[ -n "$memory" ]]; then
+
+        health_status_ok
+
+    else
+
+        health_status_error
+
+    fi
 
 }
+
+###############################################################################
+# HOSTNAME
+###############################################################################
+
+health_hostname() {
+
+    local hostname="$1"
+
+    if [[ -n "$hostname" ]]; then
+
+        health_status_ok
+
+    else
+
+        health_status_error
+
+    fi
+
+}
+###############################################################################
+# KERNEL
+###############################################################################
 
 health_kernel() {
 
-    echo "$STATUS_PASS"
+    local kernel="$1"
+
+    if [[ -n "$kernel" ]]; then
+
+        health_status_ok
+
+    else
+
+        health_status_error
+
+    fi
 
 }
+
+###############################################################################
+# DISTRIBUTION
+###############################################################################
 
 health_distribution() {
 
-    echo "$STATUS_PASS"
+    local distribution="$1"
+
+    if [[ -n "$distribution" ]]; then
+
+        health_status_ok
+
+    else
+
+        health_status_error
+
+    fi
 
 }
+
+###############################################################################
+# RECOMMENDATIONS
+###############################################################################
+
+health_recommendation() {
+
+    local component="$1"
+    local status="$2"
+
+    case "$component" in
+
+        Disk)
+
+            case "$status" in
+                PASS) echo "Disk usage is within normal limits." ;;
+                WARNING) echo "Disk usage is increasing. Monitor available space." ;;
+                CRITICAL) echo "Free disk space immediately." ;;
+                *) echo "Review disk usage." ;;
+            esac
+            ;;
+
+        Memory)
+
+            case "$status" in
+                PASS) echo "Memory information collected successfully." ;;
+                ERROR) echo "Unable to retrieve memory information." ;;
+                *) echo "Review memory configuration." ;;
+            esac
+            ;;
+
+        Kernel)
+
+            case "$status" in
+                PASS) echo "Kernel detected successfully." ;;
+                ERROR) echo "Kernel information unavailable." ;;
+                *) echo "Verify installed kernel." ;;
+            esac
+            ;;
+
+        Hostname)
+
+            case "$status" in
+                PASS) echo "Hostname configuration is valid." ;;
+                ERROR) echo "Hostname is not configured." ;;
+                *) echo "Review hostname configuration." ;;
+            esac
+            ;;
+
+        Distribution)
+
+            case "$status" in
+                PASS) echo "Distribution detected successfully." ;;
+                ERROR) echo "Unable to determine Linux distribution." ;;
+                *) echo "Review operating system information." ;;
+            esac
+            ;;
+
+        *)
+
+            echo "No recommendation available."
+            ;;
+
+    esac
+
+}
+
+###############################################################################
+# PUBLIC API
+###############################################################################
+
+health_version() {
+
+    echo "Health Service v2.0"
+
+}
+
+###############################################################################
+# END OF FILE
+###############################################################################

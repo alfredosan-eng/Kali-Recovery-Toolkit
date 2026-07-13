@@ -109,11 +109,11 @@ generate_backup_report() {
 
     report_section "Execution Time" "$(date)"
 
-    report_section "User" "$(get_current_user)"
+    report_section "User" "$(whoami)"
 
-    report_section "Hostname" "$(get_hostname)"
+    report_section "Hostname" "$(collect_hostname)"
 
-    report_section "Kernel" "$(get_kernel)"
+    report_section "Kernel" "$(collect_kernel)"
 
     report_section "Status" "SUCCESS"
 
