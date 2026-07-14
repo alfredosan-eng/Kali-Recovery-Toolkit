@@ -11,19 +11,17 @@ FAIL_COUNT=0
 
 run_test() {
 
-    local name="$1"
-    local file="$2"
+    local NAME="$1"
+    local FILE="$2"
 
-    if [[ -f "$file" ]]; then
+    if [[ -f "$FILE" ]]; then
 
-        echo "[PASS] $name"
-
+        echo "[PASS] $NAME"
         ((PASS_COUNT++))
 
     else
 
-        echo "[FAIL] $name"
-
+        echo "[FAIL] $NAME"
         ((FAIL_COUNT++))
 
     fi
@@ -33,26 +31,30 @@ run_test() {
 echo "Running framework tests..."
 echo
 
+###############################################################################
+# Services
+###############################################################################
+
 run_test "Collector Service" "services/collector/collector.sh"
-
 run_test "Logger Service" "services/logger/logger.sh"
-
 run_test "Report Service" "services/report/report.sh"
-
 run_test "Health Service" "services/health/health.sh"
 
+###############################################################################
+# Modules
+###############################################################################
+
 run_test "Backup Module" "modules/backup/module.sh"
-
 run_test "Doctor Module" "modules/doctor/module.sh"
-
 run_test "Recovery Module" "modules/recovery/module.sh"
-
 run_test "EFI Module" "modules/efi/module.sh"
+run_test "GRUB Module" "modules/grub/module.sh"
+run_test "Boot Module" "modules/boot/module.sh"
+run_test "Kernel Module" "modules/kernel/module.sh"
 
 echo
 echo "----------------------------------------"
 echo "PASS : $PASS_COUNT"
-
 echo "FAIL : $FAIL_COUNT"
 echo "----------------------------------------"
 
