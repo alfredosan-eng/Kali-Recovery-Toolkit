@@ -15,6 +15,12 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "${ROOT_DIR}/services/logger/logger.sh"
 
 #
+# Framework API
+#
+
+source "${ROOT_DIR}/core/framework/framework_api.sh"
+
+#
 # Future Services
 #
 

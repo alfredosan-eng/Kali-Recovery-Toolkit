@@ -40,44 +40,42 @@ dispatch_command() {
 
         --doctor)
 
-            source "${ROOT_DIR}/modules/doctor/module.sh"
-            run_doctor
+            framework_run_doctor
             ;;
 
         --backup)
 
-            source "${ROOT_DIR}/modules/backup/module.sh"
-            run_backup
+            framework_run_backup
             ;;
 
         --recover)
 
-            source "${ROOT_DIR}/modules/recovery/module.sh"
-            run_recovery
+            framework_run_recovery
             ;;
 
         --efi)
 
-            source "${ROOT_DIR}/modules/efi/module.sh"
-            run_efi
+            framework_run_efi
             ;;
 
         --grub)
 
-            source "${ROOT_DIR}/modules/grub/module.sh"
-            run_grub
+            framework_run_grub
             ;;
 
         --boot)
 
-            source "${ROOT_DIR}/modules/boot/module.sh"
-            run_boot
+            framework_run_boot
             ;;
 
         --kernel)
 
-            source "${ROOT_DIR}/modules/kernel/module.sh"
-            run_kernel
+            framework_run_kernel
+            ;;
+			
+        --filesystem)
+
+            framework_run_filesystem
             ;;
 
         *)

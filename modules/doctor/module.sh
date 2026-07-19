@@ -8,6 +8,7 @@
 source "${ROOT_DIR}/services/collector/collector.sh"
 source "${ROOT_DIR}/services/report/report.sh"
 source "${ROOT_DIR}/services/health/health.sh"
+source "${ROOT_DIR}/services/inspector/inspector.sh"
 
 ###############################################################################
 # Public API
@@ -49,26 +50,56 @@ run_doctor() {
     MEMORY_STATUS="$(health_memory "$MEMORY")"
     DISK_STATUS="$(health_disk_usage "$DISK")"
 
-    echo
-    echo "=============================================================="
-    echo "                       KRT Doctor"
-    echo "=============================================================="
-    echo
+            inspector_header "KRT Doctor"
 
-    printf "%-18s %-25s %-10s\n" "User" "$USERNAME" "PASS"
-    printf "%-18s %-25s %-10s\n" "Hostname" "$HOSTNAME" "$HOST_STATUS"
-    printf "%-18s %-25s %-10s\n" "Distribution" "$DISTRIBUTION" "$DIST_STATUS"
-    printf "%-18s %-25s %-10s\n" "Kernel" "$KERNEL" "$KERNEL_STATUS"
-    printf "%-18s %-25s %-10s\n" "Architecture" "$ARCHITECTURE" "PASS"
-    printf "%-18s %-25s %-10s\n" "Memory" "$MEMORY" "$MEMORY_STATUS"
-    printf "%-18s %-25s %-10s\n" "Disk Usage" "$DISK" "$DISK_STATUS"
-    printf "%-18s %-25s %-10s\n" "Uptime" "$UPTIME" "INFO"
-    printf "%-18s %-25s %-10s\n" "Shell" "$SHELL" "PASS"
+    inspector_row \
+        "User" \
+        "$USERNAME" \
+        "PASS"
 
-    echo
-    echo "=============================================================="
+    inspector_row \
+        "Hostname" \
+        "$HOSTNAME" \
+        "$HOST_STATUS"
 
-    report_init "doctor_report.txt"
+    inspector_row \
+        "Distribution" \
+        "$DISTRIBUTION" \
+        "$DIST_STATUS"
+
+    inspector_row \
+        "Kernel" \
+        "$KERNEL" \
+        "$KERNEL_STATUS"
+
+    inspector_row \
+        "Architecture" \
+        "$ARCHITECTURE" \
+        "PASS"
+
+    inspector_row \
+        "Memory" \
+        "$MEMORY" \
+        "$MEMORY_STATUS"
+
+    inspector_row \
+        "Disk Usage" \
+        "$DISK" \
+        "$DISK_STATUS"
+
+    inspector_row \
+        "Uptime" \
+        "$UPTIME" \
+        "INFO"
+
+    inspector_row \
+        "Shell" \
+        "$SHELL" \
+        "PASS"
+
+    inspector_footer
+
+        report_init "doctor_report.txt"
 
     report_header "Doctor Report"
 

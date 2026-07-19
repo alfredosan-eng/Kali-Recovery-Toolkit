@@ -10,6 +10,7 @@
 source "${ROOT_DIR}/services/collector/collector.sh"
 source "${ROOT_DIR}/services/report/report.sh"
 source "${ROOT_DIR}/services/health/health.sh"
+source "${ROOT_DIR}/services/inspector/inspector.sh"
 
 run_grub() {
 
@@ -39,35 +40,32 @@ run_grub() {
     fi
 
     INSTALLED_KERNELS="$(collect_installed_kernels | wc -l)"
-    echo
-    echo "=============================================================="
-    echo "                    KRT GRUB Inspector"
-    echo "=============================================================="
-    echo
+    
+    inspector_header "KRT GRUB Inspector"
 
-    printf "%-20s %-30s %-10s\n" \
+    inspector_row \
         "GRUB Version" \
         "${GRUB_VERSION:-Unknown}" \
         "PASS"
 
-    printf "%-20s %-30s %-10s\n" \
+    inspector_row \
         "GRUB Directory" \
         "$GRUB_DIRECTORY" \
         "$DIR_STATUS"
 
-    printf "%-20s %-30s %-10s\n" \
+    inspector_row \
         "grub.cfg" \
         "$GRUB_CONFIG" \
         "$CFG_STATUS"
 
-    printf "%-20s %-30s %-10s\n" \
+    inspector_row \
         "Installed Kernels" \
         "$INSTALLED_KERNELS" \
         "INFO"
 
-    echo
-    echo "=============================================================="
+    inspector_footer
 
+    
     report_init "grub_report.txt"
 
     report_header "GRUB Inspector Report"

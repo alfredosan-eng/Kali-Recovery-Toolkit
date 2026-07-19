@@ -45,17 +45,17 @@ health_status_critical() {
 # DISK
 ###############################################################################
 
-health_disk_usage() {
+health_percentage() {
 
-    local usage="$1"
+    local value="$1"
 
-    usage="${usage%\%}"
+    value="${value%\%}"
 
-    if (( usage < 80 )); then
+    if (( value < 80 )); then
 
         health_status_ok
 
-    elif (( usage < 90 )); then
+    elif (( value < 90 )); then
 
         health_status_warning
 
@@ -64,6 +64,18 @@ health_disk_usage() {
         health_status_critical
 
     fi
+
+}
+
+health_disk_usage() {
+
+    health_percentage "$1"
+
+}
+
+health_inode_usage() {
+
+    health_percentage "$1"
 
 }
 
@@ -219,6 +231,28 @@ health_recommendation() {
 health_version() {
 
     echo "Health Service v2.0"
+
+}
+
+###############################################################################
+#
+# Mount Point Health
+#
+###############################################################################
+
+health_mountpoint() {
+
+    local mountpoint="$1"
+
+    if [[ -n "$mountpoint" ]]; then
+
+        health_status_ok
+
+    else
+
+        health_status_critical
+
+    fi
 
 }
 

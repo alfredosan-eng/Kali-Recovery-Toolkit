@@ -113,6 +113,66 @@ collect_fstab() {
     cat /etc/fstab
 
 }
+
+###############################################################################
+# FILESYSTEM
+###############################################################################
+
+collect_root_device() {
+
+    findmnt -n -o SOURCE /
+
+}
+
+collect_root_filesystem() {
+
+    findmnt -n -o FSTYPE /
+
+}
+
+collect_root_size() {
+
+    df -h / | awk 'NR==2 {print $2}'
+
+}
+
+collect_root_used() {
+
+    df -h / | awk 'NR==2 {print $3}'
+
+}
+
+collect_root_available() {
+
+    df -h / | awk 'NR==2 {print $4}'
+
+}
+
+collect_root_usage() {
+
+    df -i / | awk 'NR==2 {print $5}'
+
+}
+
+collect_root_inode_available() {
+
+    df -i / | awk 'NR==2 {print $4}'
+
+}
+
+collect_root_inode_usage() {
+
+    df -i / | awk 'NR==2 {print $5}'
+
+}
+
+collect_mounted_filesystems() {
+
+    df -hT \
+        | awk 'NR==1 || $1 ~ "^/dev/"'
+
+}
+
 ###############################################################################
 # NETWORK
 ###############################################################################
@@ -145,8 +205,9 @@ collect_dns_servers() {
 
 collect_efi_partition() {
 
-    lsblk -f \
-        | grep -i vfat
+    lsblk -P \
+        -o NAME,FSTYPE,LABEL,UUID,SIZE,FSUSE%,MOUNTPOINT \
+        | grep 'MOUNTPOINT="/boot/efi"'
 
 }
 
@@ -223,6 +284,56 @@ collect_snapshot_shell() {
 collect_snapshot_uptime() {
 
     collect_uptime
+
+}
+
+###############################################################################
+# EFI API
+###############################################################################
+
+collect_efi_device() {
+
+    lsblk -P \
+        -o NAME,MOUNTPOINT \
+        | awk -F'"' '/MOUNTPOINT="\/boot\/efi"/ {print $2}'
+
+}
+
+collect_efi_uuid() {
+
+    lsblk -P \
+        -o UUID,MOUNTPOINT \
+        | awk -F'"' '/MOUNTPOINT="\/boot\/efi"/ {print $2}'
+
+}
+
+collect_efi_filesystem() {
+
+    lsblk -P \
+        -o FSTYPE,MOUNTPOINT \
+        | awk -F'"' '/MOUNTPOINT="\/boot\/efi"/ {print $2}'
+
+}
+
+collect_efi_mountpoint() {
+
+    echo "/boot/efi"
+
+}
+
+collect_efi_size() {
+
+    lsblk -P \
+        -o SIZE,MOUNTPOINT \
+        | awk -F'"' '/MOUNTPOINT="\/boot\/efi"/ {print $2}'
+
+}
+
+collect_efi_usage() {
+
+    lsblk -P \
+        -o FSUSE%,MOUNTPOINT \
+        | awk -F'"' '/MOUNTPOINT="\/boot\/efi"/ {print $2}'
 
 }
 ###############################################################################
@@ -347,6 +458,19 @@ Software
 EOF
 
 }
+
+###############################################################################
+#
+# EFI Mount Point
+#
+###############################################################################
+
+collect_efi_mountpoint() {
+
+    findmnt -n -o TARGET /boot/efi
+
+}
+
 ###############################################################################
 # ROADMAP
 ###############################################################################

@@ -10,6 +10,7 @@
 source "${ROOT_DIR}/services/collector/collector.sh"
 source "${ROOT_DIR}/services/report/report.sh"
 source "${ROOT_DIR}/services/health/health.sh"
+source "${ROOT_DIR}/services/inspector/inspector.sh"
 
 run_kernel() {
 
@@ -35,34 +36,29 @@ run_kernel() {
         HEADER_STATUS="INFO"
     fi
 
-    echo
-    echo "=============================================================="
-    echo "                  KRT Kernel Inspector"
-    echo "=============================================================="
-    echo
+    inspector_header "KRT Kernel Inspector"
 
-    printf "%-22s %-28s %-10s\n" \
-        "Running Kernel" \
-        "$RUNNING_KERNEL" \
-        "PASS"
+inspector_row \
+    "Running Kernel" \
+    "$RUNNING_KERNEL" \
+    "PASS"
 
-    printf "%-22s %-28s %-10s\n" \
-        "Installed Kernels" \
-        "$INSTALLED_KERNELS" \
-        "INFO"
+inspector_row \
+    "Installed Kernels" \
+    "$INSTALLED_KERNELS" \
+    "INFO"
 
-    printf "%-22s %-28s %-10s\n" \
-        "Initramfs" \
-        "Detected" \
-        "$INITRAMFS_STATUS"
+inspector_row \
+    "Initramfs" \
+    "Detected" \
+    "$INITRAMFS_STATUS"
 
-    printf "%-22s %-28s %-10s\n" \
-        "Kernel Headers" \
-        "Installed" \
-        "$HEADER_STATUS"
+inspector_row \
+    "Kernel Headers" \
+    "Installed" \
+    "$HEADER_STATUS"
 
-    echo
-    echo "=============================================================="
+inspector_footer
 
     report_init "kernel_report.txt"
 

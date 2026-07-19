@@ -81,6 +81,46 @@ framework_run_recovery() {
 
 }
 
+framework_run_boot() {
+
+    source "${ROOT_DIR}/modules/boot/module.sh"
+
+    run_boot
+
+}
+
+framework_run_efi() {
+
+    source "${ROOT_DIR}/modules/efi/module.sh"
+
+    run_efi
+
+}
+
+framework_run_grub() {
+
+    source "${ROOT_DIR}/modules/grub/module.sh"
+
+    run_grub
+
+}
+
+framework_run_kernel() {
+
+    source "${ROOT_DIR}/modules/kernel/module.sh"
+
+    run_kernel
+
+}
+
+framework_run_filesystem() {
+
+    source "${ROOT_DIR}/modules/filesystem/module.sh"
+
+    run_filesystem
+
+}
+
 ###############################################################################
 # Framework Information
 ###############################################################################
