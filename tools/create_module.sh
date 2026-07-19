@@ -11,12 +11,34 @@ set -e
 
 MODULE_NAME="$1"
 
+###############################################################################
+# Validate module name
+###############################################################################
+
 if [[ -z "$MODULE_NAME" ]]; then
     echo
     echo "Usage:"
     echo
     echo "    ./tools/create_module.sh <module_name>"
     echo
+    exit 1
+fi
+
+if [[ "$MODULE_NAME" == -* ]]; then
+    echo
+    echo "[ERROR] Invalid module name: $MODULE_NAME"
+    echo "Module names cannot start with '-'."
+    exit 1
+fi
+
+if [[ ! "$MODULE_NAME" =~ ^[a-z][a-z0-9_-]*$ ]]; then
+    echo
+    echo "[ERROR] Invalid module name."
+    echo "Allowed characters:"
+    echo "  - lowercase letters"
+    echo "  - numbers"
+    echo "  - '-'"
+    echo "  - '_'"
     exit 1
 fi
 
