@@ -68,19 +68,64 @@ collect_memory() {
 
 }
 
-collect_cpu_model() {
+###############################################################################
+# MEMORY
+###############################################################################
 
-    lscpu \
-        | awk -F: '/Model name/ {
-            gsub(/^[ \t]+/, "", $2)
-            print $2
-        }'
+collect_memory_total() {
+
+    awk '/MemTotal/ {print $2 " kB"}' /proc/meminfo
 
 }
 
-collect_cpu_cores() {
+collect_memory_available() {
 
-    nproc
+    awk '/MemAvailable/ {print $2 " kB"}' /proc/meminfo
+
+}
+
+collect_memory_cached() {
+
+    awk '/^Cached:/ {print $2 " kB"}' /proc/meminfo
+
+}
+
+collect_memory_buffers() {
+
+    awk '/Buffers:/ {print $2 " kB"}' /proc/meminfo
+
+}
+
+collect_swap_total() {
+
+    awk '/SwapTotal/ {print $2 " kB"}' /proc/meminfo
+
+}
+
+collect_swap_free() {
+
+    awk '/SwapFree/ {print $2 " kB"}' /proc/meminfo
+
+}
+
+
+###############################################################################
+# MEMORY CONTEXT
+###############################################################################
+
+collect_memory_information() {
+
+    MEMORY_TOTAL=$(awk '/MemTotal:/ {print $2}' /proc/meminfo)
+
+    MEMORY_AVAILABLE=$(awk '/MemAvailable:/ {print $2}' /proc/meminfo)
+
+    MEMORY_CACHED=$(awk '/^Cached:/ {print $2}' /proc/meminfo)
+
+    MEMORY_BUFFERS=$(awk '/Buffers:/ {print $2}' /proc/meminfo)
+
+    SWAP_TOTAL=$(awk '/SwapTotal:/ {print $2}' /proc/meminfo)
+
+    SWAP_FREE=$(awk '/SwapFree:/ {print $2}' /proc/meminfo)
 
 }
 
@@ -315,11 +360,6 @@ collect_efi_filesystem() {
 
 }
 
-collect_efi_mountpoint() {
-
-    echo "/boot/efi"
-
-}
 
 collect_efi_size() {
 

@@ -79,25 +79,6 @@ health_inode_usage() {
 
 }
 
-###############################################################################
-# MEMORY
-###############################################################################
-
-health_memory() {
-
-    local memory="$1"
-
-    if [[ -n "$memory" ]]; then
-
-        health_status_ok
-
-    else
-
-        health_status_error
-
-    fi
-
-}
 
 ###############################################################################
 # HOSTNAME
@@ -255,7 +236,73 @@ health_mountpoint() {
     fi
 
 }
+###############################################################################
+# MEMORY HEALTH
+###############################################################################
 
+health_memory() {
+
+    MEMORY_USED=$((MEMORY_TOTAL - MEMORY_AVAILABLE))
+
+    if [[ "$MEMORY_TOTAL" -gt 0 ]]; then
+
+        MEMORY_USAGE_PERCENT=$((MEMORY_USED * 100 / MEMORY_TOTAL))
+
+    else
+
+        MEMORY_USAGE_PERCENT=0
+
+    fi
+
+    SWAP_USED=$((SWAP_TOTAL - SWAP_FREE))
+
+    if [[ "$SWAP_TOTAL" -gt 0 ]]; then
+
+        SWAP_USAGE_PERCENT=$((SWAP_USED * 100 / SWAP_TOTAL))
+
+    else
+
+        SWAP_USAGE_PERCENT=0
+
+    fi
+
+    ###########################################################################
+    # Memory Status
+    ###########################################################################
+
+    if (( MEMORY_USAGE_PERCENT >= 90 )); then
+
+        MEMORY_STATUS="CRITICAL"
+
+    elif (( MEMORY_USAGE_PERCENT >= 80 )); then
+
+        MEMORY_STATUS="WARN"
+
+    else
+
+        MEMORY_STATUS="PASS"
+
+    fi
+
+    ###########################################################################
+    # Swap Status
+    ###########################################################################
+
+    if (( SWAP_USAGE_PERCENT >= 50 )); then
+
+        SWAP_STATUS="CRITICAL"
+
+    elif (( SWAP_USAGE_PERCENT > 0 )); then
+
+        SWAP_STATUS="WARN"
+
+    else
+
+        SWAP_STATUS="PASS"
+
+    fi
+
+}
 ###############################################################################
 # END OF FILE
 ###############################################################################
